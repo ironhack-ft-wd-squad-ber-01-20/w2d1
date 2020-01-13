@@ -5,8 +5,6 @@ console.log(document);
 console.log(document.body); // ✅
 console.log(document.body.div); // ❌
 
-console.clear();
-
 // Selectors
 
 // through its #id
@@ -49,7 +47,6 @@ lastListItem.innerText = "repair bike tyre";
 // returns an HTML collection with all elements with a given class
 
 console.log(document.getElementsByClassName("container"));
-console.clear();
 
 // HTMLCollection [div.container]
 
@@ -73,8 +70,6 @@ console.log(document.querySelector("li")); // li
 // updating style properties
 // firstListItem.style.textDecoration = "line-through";
 // firstListItem.style["background-color"] = "limegreen";
-
-console.clear();
 
 // className allows to set the value for the `class` attribute
 // firstListItem.className = "checked";
@@ -113,3 +108,55 @@ const parentElement = document.querySelector("#todo-list");
 parentElement.insertBefore(newListItem, firstListItem);
 
 // parentElement.insertBefore(newListItem, parentElement.querySelector("li"));
+
+parentElement.insertBefore(newListItem, parentElement.querySelector("li"));
+
+console.clear();
+
+// document.getElementById("submit-todo").onclick = function() {
+//   console.log("click");
+// }
+
+document.getElementById("submit-todo").onclick = addTodo;
+
+function addTodo() {
+  //   retrieve the user input
+  const todo = document.querySelector("input").value; // value allows us to access the typed text in an input
+
+  // create an element with that text as content
+  const newTodo = document.createElement("li");
+  newTodo.innerText = todo;
+
+  newTodo.onclick = toggleTodo;
+
+  const todoList = document.getElementById("todo-list");
+  todoList.appendChild(newTodo);
+
+  document.querySelector("input").value = ""; // reset input field
+}
+
+// toggle `checked` class on list items
+
+// add an event listener to each one of the list items
+
+// [...todoListItems].forEach(function(item) {
+console.log("registering event handlers");
+document.querySelectorAll("ol > li").forEach(function(item) {
+  // forEach of the list items, assign a reference to the toggleTodo function to run on click event
+  item.onclick = toggleTodo;
+
+  //   item.onclick = function(event) {
+  //     const currentTarget = event.target;
+
+  //     currentTarget.classList.toggle("checked");
+  //   };
+});
+
+function toggleTodo(event) {
+  // get the reference to the clicked todo
+  // event.target is a reference to the element that was targetted by the click event
+
+  const currentTarget = event.target;
+
+  currentTarget.classList.toggle("checked");
+}
