@@ -154,7 +154,7 @@ document.querySelectorAll("ol > li").forEach(function(item) {
 
 function toggleTodo(event) {
   // get the reference to the clicked todo
-  // event.target is a reference to the element that was targetted by the click event
+  // event.target is a reference to the element that was targeted by the click event
 
   const currentTarget = event.target;
 
