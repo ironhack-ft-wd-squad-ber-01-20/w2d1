@@ -9,3 +9,8 @@ body {
 ol {
   list-style-type: none;
 }
+
+.checked {
+  text-decoration: line-through red;
+  border: 1px solid lawngreen;
+}

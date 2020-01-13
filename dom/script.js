@@ -21,11 +21,15 @@ const allListItems = document.getElementsByTagName("li");
 // we can use the selectors on other elements, not just `document`, they will select starting from that node
 const todoListItems = todoList.getElementsByTagName("li");
 
+// const todoListItems = document
+//   .getElementById("todo-list")
+//   .getElementsByTagName("li");
+
 // we can access elements in an HTMLCollection through their [index]
-const firstListItem = todoListItems[0];
+const lastListItem = todoListItems[todoListItems.length - 1];
 
 // we can access and manipulate properties of DOM elements
-firstListItem.innerText = "repair bike tyre";
+lastListItem.innerText = "repair bike tyre";
 
 // make all the list items innerText upperCase
 
@@ -45,4 +49,67 @@ firstListItem.innerText = "repair bike tyre";
 // returns an HTML collection with all elements with a given class
 
 console.log(document.getElementsByClassName("container"));
+console.clear();
+
 // HTMLCollection [div.container]
+
+// querySelector
+// return the first element matching a given CSS selector
+
+const firstListItem = document.querySelector("#todo-list > li");
+
+// querySelectorAll
+// returns all elements matching a given CSS selector, in a NodeList
+// NodeList is also not an array, and the main difference with HTMLCollection is that it has the `.forEach` method
+
+console.log(document.querySelectorAll(".container")); // NodeList [div.container]
+
+console.log(document.querySelectorAll("li")); // NodeList(6) [li, li, li, li, li, li]
+
+console.log(document.querySelector("li")); // li
+
+// More manipulation
+
+// updating style properties
+// firstListItem.style.textDecoration = "line-through";
+// firstListItem.style["background-color"] = "limegreen";
+
+console.clear();
+
+// className allows to set the value for the `class` attribute
+// firstListItem.className = "checked";
+
+// firstListItem.className = "checked active";
+
+firstListItem.classList.add("checked");
+firstListItem.classList.add("active");
+
+firstListItem.classList.remove("active");
+
+firstListItem.classList.toggle("active");
+firstListItem.classList.toggle("checked");
+
+// allows to set an attribute (name, value)
+firstListItem.setAttribute("id", "first-item");
+// imageElement.setAttribute('src', 'http://imgur.com/123.gif')
+
+// we can retrieve and remove attributes using getAttribute(name) and removeAttribute(name)
+
+console.log(firstListItem);
+
+// Adding elements to the DOM
+
+// document.createElement(type) will create a node of a given type
+
+const newListItem = document.createElement("li");
+
+newListItem.classList.add("checked");
+newListItem.innerText = "finish pizza lab";
+
+const parentElement = document.querySelector("#todo-list");
+
+// parentElement.appendChild(newListItem);
+
+parentElement.insertBefore(newListItem, firstListItem);
+
+// parentElement.insertBefore(newListItem, parentElement.querySelector("li"));
