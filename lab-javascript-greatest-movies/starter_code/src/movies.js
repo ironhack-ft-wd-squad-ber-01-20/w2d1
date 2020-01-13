@@ -101,4 +101,128 @@ function dramaMoviesRate(movies) {
 
 // Iteration 6: Time Format - Turn duration of the movies from hours to minutes
 
+function convertStrToMinutes(str) {
+  // input str can be in these formats:
+  // "2h 22min" | "2h" | "45min"
+  const splitted = str.split(" ");
+
+  let minConversion;
+
+  if (splitted.length === 2) {
+    // "2h 22min"
+    let hours = parseInt(splitted[0]);
+    let minutes = parseInt(splitted[1]);
+    minConversion = hours * 60 + minutes;
+  } else if (splitted[0].indexOf("h") !== -1) {
+    // "2h"
+    let hours = parseInt(splitted[0]);
+    minConversion = hours * 60;
+  } else if (splitted[0].indexOf("min") !== -1) {
+    // "45min"
+    let minutes = parseInt(splitted[0]);
+    minConversion = minutes;
+  }
+
+  return minConversion;
+}
+
+function turnHoursToMinutes(movies) {
+  return movies.map(function(movie) {
+    const durationInMinutes = convertStrToMinutes(movie.duration);
+
+    // return Object.assign({}, movie, { duration: durationInMinutes });
+
+    // return { ...movie, duration: durationInMinutes };
+
+    const newObj = {
+      title: movie.title,
+      year: movie.year,
+      director: movie.director,
+      genre: movie.genre,
+      rate: movie.rate,
+      duration: durationInMinutes // ✅
+    };
+
+    return newObj;
+
+    // movie.duration = durationInMinutes; // ❌
+    // return movie;
+  });
+}
+
 // BONUS Iteration: Best yearly rate average - Best yearly rate average
+
+function bestYearAvg(movies) {
+  // 1- group the movies by year
+  // 2- for each year, calculate the avg rate
+  // 3- sort the years by their avg rate
+
+  function getMoviesForYear(movies, year) {
+    return movies.filter(function(movie) {
+      return movie.year === year;
+    });
+  }
+
+  if (movies.length === 0) {
+    return null;
+  }
+
+  const movieYears = movies.map(function(movie) {
+    return movie.year;
+  });
+
+  const uniqueMovieYears = movieYears.filter(function(year, index) {
+    if (movieYears.indexOf(year) === index) {
+      // this condition will only be true ONCE for every year in the array
+      return true;
+    }
+  });
+
+  const top = uniqueMovieYears.reduce(
+    function(accumulator, currentYear) {
+      const moviesForYear = getMoviesForYear(movies, currentYear); // retrieves an array with all the movies for the current year
+      const rate = ratesAverage(moviesForYear); // calculates average rate for the movies for the current year
+
+      if (rate === null || rate > accumulator.rate) {
+        //   if the computed rate is greater than the rate that was previously stored: reassign accumulator.rate & accumulator.year
+
+        accumulator.rate = rate;
+        accumulator.year = currentYear;
+      } else if (rate === accumulator.rate) {
+        //   if the computed rate is equal to the rate that was previously stored: compare the year
+        if (currentYear < accumulator.year) {
+          accumulator.year = currentYear;
+        }
+      }
+
+      return accumulator;
+    },
+    {
+      year: null,
+      rate: null
+    }
+  );
+
+  return (
+    "The best year was " + top.year + " with an average rate of " + top.rate
+  );
+
+  //   uniqueMovieYears.sort(function(yearA, yearB) {
+  //     const moviesA = getMoviesForYear(movies, yearA);
+  //     const moviesB = getMoviesForYear(movies, yearB);
+
+  //     const avgA = ratesAverage(moviesA);
+  //     const avgB = ratesAverage(moviesB);
+
+  //     if (avgA === avgB) {
+  //       return yearA - yearB;
+  //     }
+  //     return avgB - avgA;
+  //   });
+
+  //   const topYear = uniqueMovieYears[0];
+  //   const topYearMovies = getMoviesForYear(movies, topYear);
+  //   const topRate = ratesAverage(topYearMovies);
+
+  //   return "The best year was " + topYear + " with an average rate of " + topRate;
+}
